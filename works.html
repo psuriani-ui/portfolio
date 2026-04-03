@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Works — Patrick Suriani</title>
+  <meta name="description" content="Design Director portfolio — selected works in brand strategy, visual identity, and art direction.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Lenis smooth scroll -->
+  <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.17/dist/lenis.css">
+
+  <!-- Tailwind CDN v4 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0f0f0f',
+            surface: '#1a1a1a',
+            border: '#2a2a2a',
+            text: '#ffffff',
+            muted: '#a6a6a6',
+            faint: '#555555',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { background-color: #0f0f0f; color: #fff; font-family: 'Inter', sans-serif; min-height: 100dvh; }
+
+    /* Nav slide-in */
+    @keyframes navSlideDown {
+      from { opacity: 0; transform: translateY(-120px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .nav-animate { animation: navSlideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    /* Stagger fade-in for cards */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .card-animate { opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .card-animate:nth-child(1) { animation-delay: 0.05s; }
+    .card-animate:nth-child(2) { animation-delay: 0.12s; }
+    .card-animate:nth-child(3) { animation-delay: 0.19s; }
+    .card-animate:nth-child(4) { animation-delay: 0.26s; }
+    .card-animate:nth-child(5) { animation-delay: 0.33s; }
+    .card-animate:nth-child(6) { animation-delay: 0.40s; }
+
+    /* Card image zoom on hover */
+    .project-card img {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-card:hover img {
+      transform: scale(1.04);
+    }
+
+    /* Card overlay text reveal */
+    .card-info {
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .project-card:hover .card-info {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Filter pill active */
+    .filter-pill { transition: color 0.2s ease, border-color 0.2s ease; cursor: pointer; }
+    .filter-pill.active { color: #fff; border-color: #fff; }
+    .filter-pill:not(.active) { color: #a6a6a6; border-color: #2a2a2a; }
+    .filter-pill:hover:not(.active) { color: #fff; border-color: #555; }
+
+    /* Mobile menu */
+    #mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #mobile-menu.open { max-height: 400px; }
+
+    /* Lenis smooth scroll */
+    html.lenis { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+    /* Footer link hover */
+    .footer-link { transition: color 0.2s ease; }
+    .footer-link:hover { color: #fff; }
+
+    /* Nav link underline */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 0; height: 1px;
+      background: #fff;
+      transition: width 0.25s ease;
+    }
+    .nav-link:hover::after,
+    .nav-link[data-current]::after { width: 100%; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-animate, .card-animate { animation: none; opacity: 1; }
+      .project-card img { transition: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════
+       NAV — Desktop
+  ══════════════════════════════════════ -->
+  <header class="fixed top-0 left-0 right-0 z-50 hidden md:block">
+    <nav class="nav-animate px-10 py-5 flex items-center justify-between" style="background: transparent;">
+      <!-- Logo -->
+      <a href="./index.html" class="text-white font-bold text-sm tracking-wide hover:opacity-70 transition-opacity">
+        Patrick©
+      </a>
+
+      <!-- Nav links -->
+      <ul class="flex items-center gap-8 list-none">
+        <li><a href="./index.html" class="nav-link text-white text-sm font-normal">Home</a></li>
+        <li><a href="./works.html" class="nav-link text-white text-sm font-normal" data-current>Works</a></li>
+        <li><a href="./archives.html" class="nav-link text-white text-sm font-normal">Archives</a></li>
+        <li><a href="./contact.html" class="nav-link text-white text-sm font-normal">Contact</a></li>
+      </ul>
+
+      <!-- Clock / Location -->
+      <div class="text-muted text-sm font-normal tabular-nums" id="clock">
+        <span id="clock-time"></span> <span class="text-faint ml-1">cdmx</span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       NAV — Mobile
+  ══════════════════════════════════════ -->
+  <header class="fixed top-0 left-0 right-0 z-50 md:hidden" style="background: #0f0f0f;">
+    <div class="px-5 py-5 flex items-center justify-between">
+      <a href="./index.html" class="text-white font-bold text-sm">Patrick©</a>
+      <button id="menu-toggle" class="text-white text-sm font-normal" aria-label="Toggle menu" aria-expanded="false">
+        <span id="menu-label">Menu</span>
+      </button>
+    </div>
+    <div id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+      <ul class="px-5 pb-6 list-none flex flex-col gap-5">
+        <li><a href="./index.html" class="text-white text-2xl font-bold hover:opacity-60 transition-opacity">Home</a></li>
+        <li><a href="./works.html" class="text-white text-2xl font-bold hover:opacity-60 transition-opacity">Works</a></li>
+        <li><a href="./archives.html" class="text-white text-2xl font-bold hover:opacity-60 transition-opacity">Archives</a></li>
+        <li><a href="./contact.html" class="text-white text-2xl font-bold hover:opacity-60 transition-opacity">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       MAIN
+  ══════════════════════════════════════ -->
+  <main class="pt-28 md:pt-32 pb-24 px-5 md:px-10 max-w-[1200px] mx-auto">
+
+    <!-- Page heading -->
+    <div class="mb-10">
+      <h1 class="text-white text-4xl md:text-5xl font-bold tracking-tight mb-2">Works</h1>
+    </div>
+
+    <!-- Filter pills -->
+    <div class="flex flex-wrap gap-2 mb-12" id="filters" role="group" aria-label="Filter works by category">
+      <button class="filter-pill active border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="all">All Works</button>
+      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="art-direction">Art Direction</button>
+      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="brand-strategy">Brand Strategy</button>
+      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="digital">Digital</button>
+      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="marketing-materials">Marketing Materials</button>
+      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="packaging">Packaging</button>
+      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="visual-identity">Visual Identity</button>
+    </div>
+
+    <!-- Works grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="works-grid">
+
+      <!-- Project 1: Nopal -->
+      <article class="project-card card-animate cursor-pointer group"
+               data-categories="art-direction brand-strategy visual-identity"
+               tabindex="0" role="button" aria-label="View Nopal project">
+        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
+          <img
+            src="https://framerusercontent.com/images/WLJQduFa6kJyPUYts7PLBSvy2A.jpg"
+            alt="Nopal — Sustainable agriculture brand"
+            width="800" height="550"
+            loading="lazy"
+            class="w-full h-full object-cover"
+          >
+        </div>
+        <div class="mt-4 flex items-start justify-between">
+          <div>
+            <h2 class="text-white text-lg font-semibold leading-snug">Nopal</h2>
+            <p class="text-muted text-sm mt-0.5">Designing the future of sustainable agriculture</p>
+          </div>
+          <div class="card-info shrink-0 ml-4">
+            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2: Tierra Viva -->
+      <article class="project-card card-animate cursor-pointer group"
+               data-categories="brand-strategy visual-identity packaging"
+               tabindex="0" role="button" aria-label="View Tierra Viva project">
+        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
+          <img
+            src="https://framerusercontent.com/images/pr9BvjBWOBB0MeBvdryWgvng.png"
+            alt="Tierra Viva — Organic market rebrand"
+            width="800" height="550"
+            loading="lazy"
+            class="w-full h-full object-cover"
+          >
+        </div>
+        <div class="mt-4 flex items-start justify-between">
+          <div>
+            <h2 class="text-white text-lg font-semibold leading-snug">Tierra Viva</h2>
+            <p class="text-muted text-sm mt-0.5">Breathing new life into an organic market</p>
+          </div>
+          <div class="card-info shrink-0 ml-4">
+            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3: Casa Nomad -->
+      <article class="project-card card-animate cursor-pointer group"
+               data-categories="art-direction brand-strategy digital"
+               tabindex="0" role="button" aria-label="View Casa Nomad project">
+        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
+          <img
+            src="https://framerusercontent.com/images/gSPlJuwM0MKIuMDtrd15gqVOOLQ.jpg"
+            alt="Casa Nomad — Artisan global brand"
+            width="800" height="550"
+            loading="lazy"
+            class="w-full h-full object-cover"
+          >
+        </div>
+        <div class="mt-4 flex items-start justify-between">
+          <div>
+            <h2 class="text-white text-lg font-semibold leading-snug">Casa Nomad</h2>
+            <p class="text-muted text-sm mt-0.5">Weaving artisan stories into a global brand</p>
+          </div>
+          <div class="card-info shrink-0 ml-4">
+            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 4: Alba -->
+      <article class="project-card card-animate cursor-pointer group"
+               data-categories="visual-identity art-direction"
+               tabindex="0" role="button" aria-label="View Alba project">
+        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
+          <img
+            src="https://framerusercontent.com/images/GF4ssrVerG25QzdvMCyQSh48yHk.jpg"
+            alt="Alba — Minimalist sanctuary brand"
+            width="800" height="550"
+            loading="lazy"
+            class="w-full h-full object-cover"
+          >
+        </div>
+        <div class="mt-4 flex items-start justify-between">
+          <div>
+            <h2 class="text-white text-lg font-semibold leading-snug">Alba</h2>
+            <p class="text-muted text-sm mt-0.5">Crafting a sanctuary of minimalism and nature</p>
+          </div>
+          <div class="card-info shrink-0 ml-4">
+            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 5: Luz de Tierra -->
+      <article class="project-card card-animate cursor-pointer group"
+               data-categories="packaging brand-strategy visual-identity"
+               tabindex="0" role="button" aria-label="View Luz de Tierra project">
+        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
+          <img
+            src="https://framerusercontent.com/images/QhjTe3NiQv8FLstlX93kYBwNXT8.png"
+            alt="Luz de Tierra — Skincare brand"
+            width="800" height="550"
+            loading="lazy"
+            class="w-full h-full object-cover"
+          >
+        </div>
+        <div class="mt-4 flex items-start justify-between">
+          <div>
+            <h2 class="text-white text-lg font-semibold leading-snug">Luz de Tierra</h2>
+            <p class="text-muted text-sm mt-0.5">Designing a skincare brand rooted in nature</p>
+          </div>
+          <div class="card-info shrink-0 ml-4">
+            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 6: La Mesa -->
+      <article class="project-card card-animate cursor-pointer group"
+               data-categories="art-direction digital marketing-materials"
+               tabindex="0" role="button" aria-label="View La Mesa project">
+        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
+          <img
+            src="https://framerusercontent.com/images/L9p5AcNOO4D4JyhyF3tQeZqMVo.jpg"
+            alt="La Mesa — Tradition and modernity through design"
+            width="800" height="550"
+            loading="lazy"
+            class="w-full h-full object-cover"
+          >
+        </div>
+        <div class="mt-4 flex items-start justify-between">
+          <div>
+            <h2 class="text-white text-lg font-semibold leading-snug">La Mesa</h2>
+            <p class="text-muted text-sm mt-0.5">Blending tradition and modernity through design</p>
+          </div>
+          <div class="card-info shrink-0 ml-4">
+            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+    <!-- /works-grid -->
+
+  </main>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer class="px-5 md:px-10 py-12 border-t" style="border-color: #2a2a2a;">
+    <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <p class="text-muted text-sm">touch</p>
+      <nav aria-label="Social links">
+        <ul class="flex flex-wrap gap-6 list-none">
+          <li><a href="mailto:hello@patricksuriani.com" class="footer-link text-muted text-sm">Email</a></li>
+          <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="footer-link text-muted text-sm">Instagram</a></li>
+          <li><a href="https://threads.net" target="_blank" rel="noopener noreferrer" class="footer-link text-muted text-sm">Threads</a></li>
+          <li><a href="https://x.com" target="_blank" rel="noopener noreferrer" class="footer-link text-muted text-sm">X (Twitter)</a></li>
+        </ul>
+      </nav>
+      <p class="text-faint text-sm tabular-nums">©<span id="year"></span></p>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════ -->
+  <script src="https://unpkg.com/lenis@1.3.17/dist/lenis.min.js"></script>
+  <script>
+    // ── Lenis smooth scroll
+    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    // ── Clock (Mexico City UTC-6)
+    function updateClock() {
+      const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+      const h = String(now.getHours()).padStart(2,'0');
+      const m = String(now.getMinutes()).padStart(2,'0');
+      const el = document.getElementById('clock-time');
+      if (el) el.textContent = `${h}:${m}`;
+    }
+    updateClock();
+    setInterval(updateClock, 30000);
+
+    // ── Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ── Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuLabel  = document.getElementById('menu-label');
+    let menuOpen = false;
+    menuToggle.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open', menuOpen);
+      menuLabel.textContent = menuOpen ? 'Close' : 'Menu';
+      menuToggle.setAttribute('aria-expanded', menuOpen);
+    });
+
+    // ── Filter logic
+    const filters = document.getElementById('filters');
+    const cards   = document.querySelectorAll('#works-grid .project-card');
+
+    filters.addEventListener('click', e => {
+      const btn = e.target.closest('.filter-pill');
+      if (!btn) return;
+      // Update active state
+      filters.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const category = btn.dataset.filter;
+      cards.forEach(card => {
+        const cats = card.dataset.categories || '';
+        const visible = category === 'all' || cats.includes(category);
+        card.style.display = visible ? '' : 'none';
+        if (visible) {
+          // re-trigger subtle fade
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(16px)';
+          requestAnimationFrame(() => {
+            card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          });
+        }
+      });
+    });
+
+    // ── Keyboard accessibility for project cards
+    cards.forEach(card => {
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,438 +1,379 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Works — Patrick Suriani</title>
-  <meta name="description" content="Design Director portfolio — selected works in brand strategy, visual identity, and art direction.">
-
-  <!-- Fonts -->
+  <title>Patrick Suriani — Design Director</title>
+  <meta name="description" content="Design Director. Brand strategy, visual identity, art direction.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Lenis smooth scroll -->
-  <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.17/dist/lenis.css">
-
-  <!-- Tailwind CDN v4 -->
   <script src="https://cdn.tailwindcss.com"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script>
     tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            bg: '#0f0f0f',
-            surface: '#1a1a1a',
-            border: '#2a2a2a',
-            text: '#ffffff',
-            muted: '#a6a6a6',
-            faint: '#555555',
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-        }
-      }
+      theme: { extend: {
+        colors: { bg:'#0f0f0f', surface:'#1a1a1a', border:'#2a2a2a', muted:'#a6a6a6', faint:'#555' },
+        fontFamily: { sans: ['Inter','sans-serif'] }
+      }}
     }
   </script>
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-    body { background-color: #0f0f0f; color: #fff; font-family: 'Inter', sans-serif; min-height: 100dvh; }
+    html { -webkit-font-smoothing: antialiased; }
+    body { background: #0f0f0f; color: #fff; font-family: 'Inter', sans-serif; min-height: 100dvh; overflow-x: hidden; }
 
-    /* Nav slide-in */
-    @keyframes navSlideDown {
-      from { opacity: 0; transform: translateY(-120px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .nav-animate { animation: navSlideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    /* Nav */
+    @keyframes navSlide { from { opacity:0; transform:translateY(-40px); } to { opacity:1; transform:translateY(0); } }
+    .nav-animate { animation: navSlide 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:#fff; transition:width .25s ease; }
+    .nav-link:hover::after, .nav-link[data-current]::after { width:100%; }
 
-    /* Stagger fade-in for cards */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* Hero photo stack */
+    .photo-stack { position:relative; width:100%; height:520px; }
+    .photo-card {
+      position:absolute;
+      width:220px;
+      border-radius:8px;
+      overflow:hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      cursor:grab;
+      will-change:transform;
     }
-    .card-animate { opacity: 0; animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .card-animate:nth-child(1) { animation-delay: 0.05s; }
-    .card-animate:nth-child(2) { animation-delay: 0.12s; }
-    .card-animate:nth-child(3) { animation-delay: 0.19s; }
-    .card-animate:nth-child(4) { animation-delay: 0.26s; }
-    .card-animate:nth-child(5) { animation-delay: 0.33s; }
-    .card-animate:nth-child(6) { animation-delay: 0.40s; }
+    .photo-card img { width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; }
+    .photo-card:active { cursor:grabbing; }
 
-    /* Card image zoom on hover */
-    .project-card img {
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .project-card:hover img {
-      transform: scale(1.04);
-    }
+    /* Hero text */
+    .hero-name { font-size: clamp(3.5rem, 10vw, 9rem); font-weight: 700; line-height:0.95; letter-spacing:-0.03em; }
+    .hero-sub { font-size: clamp(0.8rem, 1.5vw, 1rem); color:#a6a6a6; letter-spacing:0.02em; }
 
-    /* Card overlay text reveal */
-    .card-info {
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
-    }
-    .project-card:hover .card-info {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* Section titles */
+    .section-label { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.15em; color:#555; }
 
-    /* Filter pill active */
-    .filter-pill { transition: color 0.2s ease, border-color 0.2s ease; cursor: pointer; }
-    .filter-pill.active { color: #fff; border-color: #fff; }
-    .filter-pill:not(.active) { color: #a6a6a6; border-color: #2a2a2a; }
-    .filter-pill:hover:not(.active) { color: #fff; border-color: #555; }
+    /* Work cards */
+    .work-card img { transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+    .work-card:hover img { transform: scale(1.04); }
+    .work-card-info { opacity:0; transform:translateY(6px); transition: opacity .3s ease, transform .3s ease; }
+    .work-card:hover .work-card-info { opacity:1; transform:translateY(0); }
+
+    /* Services */
+    .service-row { border-top:1px solid #2a2a2a; transition: background .2s ease; }
+    .service-row:hover { background: #1a1a1a; }
+    .service-row:last-child { border-bottom:1px solid #2a2a2a; }
+
+    /* Footer */
+    .footer-link { transition: color .2s ease; color:#a6a6a6; }
+    .footer-link:hover { color:#fff; }
 
     /* Mobile menu */
-    #mobile-menu {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    #mobile-menu.open { max-height: 400px; }
-
-    /* Lenis smooth scroll */
-    html.lenis { height: auto; }
-    .lenis.lenis-smooth { scroll-behavior: auto; }
-    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-
-    /* Footer link hover */
-    .footer-link { transition: color 0.2s ease; }
-    .footer-link:hover { color: #fff; }
-
-    /* Nav link underline */
-    .nav-link { position: relative; }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      left: 0; bottom: -2px;
-      width: 0; height: 1px;
-      background: #fff;
-      transition: width 0.25s ease;
-    }
-    .nav-link:hover::after,
-    .nav-link[data-current]::after { width: 100%; }
+    #mobile-menu { max-height:0; overflow:hidden; transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1); }
+    #mobile-menu.open { max-height:400px; }
 
     @media (prefers-reduced-motion: reduce) {
-      .nav-animate, .card-animate { animation: none; opacity: 1; }
-      .project-card img { transition: none; }
+      .photo-card, .nav-animate { animation:none !important; transition:none !important; }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- ══════════════════════════════════════
-       NAV — Desktop
-  ══════════════════════════════════════ -->
-  <header class="fixed top-0 left-0 right-0 z-50 hidden md:block">
-    <nav class="nav-animate px-10 py-5 flex items-center justify-between" style="background: transparent;">
-      <!-- Logo -->
-      <a href="./index.html" class="text-white font-bold text-sm tracking-wide hover:opacity-70 transition-opacity">
-        Patrick©
-      </a>
-
-      <!-- Nav links -->
+  <!-- NAV Desktop -->
+  <header class="fixed top-0 left-0 right-0 z-50 hidden md:block" style="background:transparent;">
+    <nav class="nav-animate px-10 py-5 flex items-center justify-between">
+      <a href="index.html" class="text-white font-bold text-sm hover:opacity-60 transition-opacity">Patrick©</a>
       <ul class="flex items-center gap-8 list-none">
-        <li><a href="./index.html" class="nav-link text-white text-sm font-normal">Home</a></li>
-        <li><a href="./works.html" class="nav-link text-white text-sm font-normal" data-current>Works</a></li>
-        <li><a href="./archives.html" class="nav-link text-white text-sm font-normal">Archives</a></li>
-        <li><a href="./contact.html" class="nav-link text-white text-sm font-normal">Contact</a></li>
+        <li><a href="index.html" class="nav-link text-white text-sm" data-current>Home</a></li>
+        <li><a href="works.html" class="nav-link text-white text-sm">Works</a></li>
+        <li><a href="archives.html" class="nav-link text-white text-sm">Archives</a></li>
+        <li><a href="contact.html" class="nav-link text-white text-sm">Contact</a></li>
       </ul>
-
-      <!-- Clock / Location -->
-      <div class="text-muted text-sm font-normal tabular-nums" id="clock">
-        <span id="clock-time"></span> <span class="text-faint ml-1">cdmx</span>
+      <div class="text-sm tabular-nums" style="color:#555;">
+        <span id="clock-time"></span> <span style="color:#333;">milan</span>
       </div>
     </nav>
   </header>
 
-  <!-- ══════════════════════════════════════
-       NAV — Mobile
-  ══════════════════════════════════════ -->
-  <header class="fixed top-0 left-0 right-0 z-50 md:hidden" style="background: #0f0f0f;">
+  <!-- NAV Mobile -->
+  <header class="fixed top-0 left-0 right-0 z-50 md:hidden" style="background:#0f0f0f;">
     <div class="px-5 py-5 flex items-center justify-between">
-      <a href="./index.html" class="text-white font-bold text-sm">Patrick©</a>
-      <button id="menu-toggle" class="text-white text-sm font-normal" aria-label="Toggle menu" aria-expanded="false">
+      <a href="index.html" class="text-white font-bold text-sm">Patrick©</a>
+      <button id="menu-toggle" class="text-white text-sm" aria-label="Toggle menu" aria-expanded="false">
         <span id="menu-label">Menu</span>
       </button>
     </div>
-    <div id="mobile-menu" role="navigation" aria-label="Mobile navigation">
-      <ul class="px-5 pb-6 list-none flex flex-col gap-5">
-        <li><a href="./index.html" class="text-white text-2xl font-bold hover:opacity-60 transition-opacity">Home</a></li>
-        <li><a href="./works.html" class="text-white text-2xl font-bold hover:opacity-60 transition-opacity">Works</a></li>
-        <li><a href="./archives.html" class="text-white text-2xl font-bold hover:opacity-60 transition-opacity">Archives</a></li>
-        <li><a href="./contact.html" class="text-white text-2xl font-bold hover:opacity-60 transition-opacity">Contact</a></li>
+    <div id="mobile-menu">
+      <ul class="px-5 pb-8 list-none flex flex-col gap-5">
+        <li><a href="index.html" class="text-white text-3xl font-bold hover:opacity-50 transition-opacity">Home</a></li>
+        <li><a href="works.html" class="text-white text-3xl font-bold hover:opacity-50 transition-opacity">Works</a></li>
+        <li><a href="archives.html" class="text-white text-3xl font-bold hover:opacity-50 transition-opacity">Archives</a></li>
+        <li><a href="contact.html" class="text-white text-3xl font-bold hover:opacity-50 transition-opacity">Contact</a></li>
       </ul>
     </div>
   </header>
 
-  <!-- ══════════════════════════════════════
-       MAIN
-  ══════════════════════════════════════ -->
-  <main class="pt-28 md:pt-32 pb-24 px-5 md:px-10 max-w-[1200px] mx-auto">
+  <main>
 
-    <!-- Page heading -->
-    <div class="mb-10">
-      <h1 class="text-white text-4xl md:text-5xl font-bold tracking-tight mb-2">Works</h1>
-    </div>
+    <!-- ═══════════════════════════════════
+         HERO
+    ═══════════════════════════════════ -->
+    <section class="min-h-screen flex flex-col justify-end pb-16 px-5 md:px-10 pt-32 relative overflow-hidden">
 
-    <!-- Filter pills -->
-    <div class="flex flex-wrap gap-2 mb-12" id="filters" role="group" aria-label="Filter works by category">
-      <button class="filter-pill active border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="all">All Works</button>
-      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="art-direction">Art Direction</button>
-      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="brand-strategy">Brand Strategy</button>
-      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="digital">Digital</button>
-      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="marketing-materials">Marketing Materials</button>
-      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="packaging">Packaging</button>
-      <button class="filter-pill border rounded-full px-4 py-1.5 text-sm font-normal" data-filter="visual-identity">Visual Identity</button>
-    </div>
+      <!-- Photo stack — visible on md+ -->
+      <div class="photo-stack hidden md:block mb-[-60px]" id="photo-stack">
 
-    <!-- Works grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="works-grid">
+        <div class="photo-card" id="p1" style="width:200px;height:260px;top:40px;left:5%;">
+          <img src="https://framerusercontent.com/images/SKwLwQq84WnB5bDrgWBresonBtw.jpg" alt="Work 1" width="400" height="520" loading="eager">
+        </div>
 
-      <!-- Project 1: Nopal -->
-      <article class="project-card card-animate cursor-pointer group"
-               data-categories="art-direction brand-strategy visual-identity"
-               tabindex="0" role="button" aria-label="View Nopal project">
-        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
-          <img
-            src="https://framerusercontent.com/images/WLJQduFa6kJyPUYts7PLBSvy2A.jpg"
-            alt="Nopal — Sustainable agriculture brand"
-            width="800" height="550"
-            loading="lazy"
-            class="w-full h-full object-cover"
-          >
+        <div class="photo-card" id="p2" style="width:240px;height:300px;top:20px;left:22%;">
+          <img src="https://framerusercontent.com/images/WLJQduFa6kJyPUYts7PLBSvy2A.jpg" alt="Nopal" width="480" height="600" loading="eager">
         </div>
-        <div class="mt-4 flex items-start justify-between">
-          <div>
-            <h2 class="text-white text-lg font-semibold leading-snug">Nopal</h2>
-            <p class="text-muted text-sm mt-0.5">Designing the future of sustainable agriculture</p>
-          </div>
-          <div class="card-info shrink-0 ml-4">
-            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
-          </div>
-        </div>
-      </article>
 
-      <!-- Project 2: Tierra Viva -->
-      <article class="project-card card-animate cursor-pointer group"
-               data-categories="brand-strategy visual-identity packaging"
-               tabindex="0" role="button" aria-label="View Tierra Viva project">
-        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
-          <img
-            src="https://framerusercontent.com/images/pr9BvjBWOBB0MeBvdryWgvng.png"
-            alt="Tierra Viva — Organic market rebrand"
-            width="800" height="550"
-            loading="lazy"
-            class="w-full h-full object-cover"
-          >
+        <div class="photo-card" id="p3" style="width:200px;height:250px;top:60px;left:40%;">
+          <img src="https://framerusercontent.com/images/gSPlJuwM0MKIuMDtrd15gqVOOLQ.jpg" alt="Casa Nomad" width="400" height="500" loading="eager">
         </div>
-        <div class="mt-4 flex items-start justify-between">
-          <div>
-            <h2 class="text-white text-lg font-semibold leading-snug">Tierra Viva</h2>
-            <p class="text-muted text-sm mt-0.5">Breathing new life into an organic market</p>
-          </div>
-          <div class="card-info shrink-0 ml-4">
-            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
-          </div>
-        </div>
-      </article>
 
-      <!-- Project 3: Casa Nomad -->
-      <article class="project-card card-animate cursor-pointer group"
-               data-categories="art-direction brand-strategy digital"
-               tabindex="0" role="button" aria-label="View Casa Nomad project">
-        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
-          <img
-            src="https://framerusercontent.com/images/gSPlJuwM0MKIuMDtrd15gqVOOLQ.jpg"
-            alt="Casa Nomad — Artisan global brand"
-            width="800" height="550"
-            loading="lazy"
-            class="w-full h-full object-cover"
-          >
+        <div class="photo-card" id="p4" style="width:220px;height:280px;top:10px;left:56%;">
+          <img src="https://framerusercontent.com/images/GF4ssrVerG25QzdvMCyQSh48yHk.jpg" alt="Alba" width="440" height="560" loading="eager">
         </div>
-        <div class="mt-4 flex items-start justify-between">
-          <div>
-            <h2 class="text-white text-lg font-semibold leading-snug">Casa Nomad</h2>
-            <p class="text-muted text-sm mt-0.5">Weaving artisan stories into a global brand</p>
-          </div>
-          <div class="card-info shrink-0 ml-4">
-            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
-          </div>
-        </div>
-      </article>
 
-      <!-- Project 4: Alba -->
-      <article class="project-card card-animate cursor-pointer group"
-               data-categories="visual-identity art-direction"
-               tabindex="0" role="button" aria-label="View Alba project">
-        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
-          <img
-            src="https://framerusercontent.com/images/GF4ssrVerG25QzdvMCyQSh48yHk.jpg"
-            alt="Alba — Minimalist sanctuary brand"
-            width="800" height="550"
-            loading="lazy"
-            class="w-full h-full object-cover"
-          >
+        <div class="photo-card" id="p5" style="width:190px;height:240px;top:50px;left:72%;">
+          <img src="https://framerusercontent.com/images/pr9BvjBWOBB0MeBvdryWgvng.png" alt="Tierra Viva" width="380" height="480" loading="eager">
         </div>
-        <div class="mt-4 flex items-start justify-between">
-          <div>
-            <h2 class="text-white text-lg font-semibold leading-snug">Alba</h2>
-            <p class="text-muted text-sm mt-0.5">Crafting a sanctuary of minimalism and nature</p>
-          </div>
-          <div class="card-info shrink-0 ml-4">
-            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
-          </div>
-        </div>
-      </article>
 
-      <!-- Project 5: Luz de Tierra -->
-      <article class="project-card card-animate cursor-pointer group"
-               data-categories="packaging brand-strategy visual-identity"
-               tabindex="0" role="button" aria-label="View Luz de Tierra project">
-        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
-          <img
-            src="https://framerusercontent.com/images/QhjTe3NiQv8FLstlX93kYBwNXT8.png"
-            alt="Luz de Tierra — Skincare brand"
-            width="800" height="550"
-            loading="lazy"
-            class="w-full h-full object-cover"
-          >
+        <div class="photo-card" id="p6" style="width:200px;height:260px;top:30px;left:86%;">
+          <img src="https://framerusercontent.com/images/L9p5AcNOO4D4JyhyF3tQeZqMVo.jpg" alt="La Mesa" width="400" height="520" loading="eager">
         </div>
-        <div class="mt-4 flex items-start justify-between">
-          <div>
-            <h2 class="text-white text-lg font-semibold leading-snug">Luz de Tierra</h2>
-            <p class="text-muted text-sm mt-0.5">Designing a skincare brand rooted in nature</p>
-          </div>
-          <div class="card-info shrink-0 ml-4">
-            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
-          </div>
-        </div>
-      </article>
 
-      <!-- Project 6: La Mesa -->
-      <article class="project-card card-animate cursor-pointer group"
-               data-categories="art-direction digital marketing-materials"
-               tabindex="0" role="button" aria-label="View La Mesa project">
-        <div class="overflow-hidden rounded-lg bg-surface" style="aspect-ratio: 16/11;">
-          <img
-            src="https://framerusercontent.com/images/L9p5AcNOO4D4JyhyF3tQeZqMVo.jpg"
-            alt="La Mesa — Tradition and modernity through design"
-            width="800" height="550"
-            loading="lazy"
-            class="w-full h-full object-cover"
-          >
-        </div>
-        <div class="mt-4 flex items-start justify-between">
-          <div>
-            <h2 class="text-white text-lg font-semibold leading-snug">La Mesa</h2>
-            <p class="text-muted text-sm mt-0.5">Blending tradition and modernity through design</p>
-          </div>
-          <div class="card-info shrink-0 ml-4">
-            <span class="text-faint text-xs uppercase tracking-widest">View →</span>
-          </div>
-        </div>
-      </article>
+      </div>
 
-    </div>
-    <!-- /works-grid -->
+      <!-- Hero text -->
+      <div class="relative z-10 mt-16 md:mt-32">
+        <h1 class="hero-name text-white">
+          Patrick<br>
+          <em style="font-style:italic;">Suriani</em>
+        </h1>
+        <p class="hero-sub mt-4">Design Director from Milan</p>
+      </div>
+
+    </section>
+
+    <!-- ═══════════════════════════════════
+         SELECTED WORKS
+    ═══════════════════════════════════ -->
+    <section class="px-5 md:px-10 py-24 max-w-[1200px] mx-auto">
+      <div class="flex items-center justify-between mb-12">
+        <div>
+          <p class="section-label mb-2">Selected</p>
+          <h2 class="text-white text-3xl md:text-4xl font-bold">Works</h2>
+        </div>
+        <a href="works.html" class="text-sm text-muted hover:text-white transition-colors border-b border-faint hover:border-white pb-0.5">See all works →</a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <article class="work-card cursor-pointer group">
+          <div class="overflow-hidden rounded-lg" style="aspect-ratio:16/11;background:#1a1a1a;">
+            <img src="https://framerusercontent.com/images/WLJQduFa6kJyPUYts7PLBSvy2A.jpg" alt="Nopal" width="800" height="550" loading="lazy" class="w-full h-full object-cover">
+          </div>
+          <div class="mt-4 flex justify-between items-start">
+            <div>
+              <h3 class="text-white font-semibold">Nopal</h3>
+              <p class="text-sm mt-0.5" style="color:#a6a6a6;">Designing the future of sustainable agriculture</p>
+            </div>
+            <span class="work-card-info text-xs uppercase tracking-widest" style="color:#555;">View →</span>
+          </div>
+        </article>
+
+        <article class="work-card cursor-pointer group">
+          <div class="overflow-hidden rounded-lg" style="aspect-ratio:16/11;background:#1a1a1a;">
+            <img src="https://framerusercontent.com/images/pr9BvjBWOBB0MeBvdryWgvng.png" alt="Tierra Viva" width="800" height="550" loading="lazy" class="w-full h-full object-cover">
+          </div>
+          <div class="mt-4 flex justify-between items-start">
+            <div>
+              <h3 class="text-white font-semibold">Tierra Viva</h3>
+              <p class="text-sm mt-0.5" style="color:#a6a6a6;">Breathing new life into an organic market</p>
+            </div>
+            <span class="work-card-info text-xs uppercase tracking-widest" style="color:#555;">View →</span>
+          </div>
+        </article>
+
+        <article class="work-card cursor-pointer group">
+          <div class="overflow-hidden rounded-lg" style="aspect-ratio:16/11;background:#1a1a1a;">
+            <img src="https://framerusercontent.com/images/gSPlJuwM0MKIuMDtrd15gqVOOLQ.jpg" alt="Casa Nomad" width="800" height="550" loading="lazy" class="w-full h-full object-cover">
+          </div>
+          <div class="mt-4 flex justify-between items-start">
+            <div>
+              <h3 class="text-white font-semibold">Casa Nomad</h3>
+              <p class="text-sm mt-0.5" style="color:#a6a6a6;">Weaving artisan stories into a global brand</p>
+            </div>
+            <span class="work-card-info text-xs uppercase tracking-widest" style="color:#555;">View →</span>
+          </div>
+        </article>
+
+        <article class="work-card cursor-pointer group">
+          <div class="overflow-hidden rounded-lg" style="aspect-ratio:16/11;background:#1a1a1a;">
+            <img src="https://framerusercontent.com/images/GF4ssrVerG25QzdvMCyQSh48yHk.jpg" alt="Alba" width="800" height="550" loading="lazy" class="w-full h-full object-cover">
+          </div>
+          <div class="mt-4 flex justify-between items-start">
+            <div>
+              <h3 class="text-white font-semibold">Alba</h3>
+              <p class="text-sm mt-0.5" style="color:#a6a6a6;">Crafting a sanctuary of minimalism and nature</p>
+            </div>
+            <span class="work-card-info text-xs uppercase tracking-widest" style="color:#555;">View →</span>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="mt-12 text-center">
+        <a href="works.html" class="inline-block border border-faint text-white text-sm px-6 py-3 rounded-full hover:border-white transition-colors">See all works</a>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         SERVICES
+    ═══════════════════════════════════ -->
+    <section class="px-5 md:px-10 py-24 max-w-[1200px] mx-auto">
+      <p class="section-label mb-8">Services</p>
+
+      <div class="service-row px-0 py-5 flex items-center justify-between cursor-default">
+        <h3 class="text-white text-xl md:text-2xl font-semibold">Art Direction</h3>
+        <span class="text-xs uppercase tracking-widest" style="color:#555;">01</span>
+      </div>
+      <div class="service-row px-0 py-5 flex flex-col md:flex-row md:items-start gap-3 md:gap-16">
+        <h3 class="text-white text-xl md:text-2xl font-semibold md:w-1/3 shrink-0">Brand Strategy</h3>
+        <p class="text-sm leading-relaxed md:w-2/3" style="color:#a6a6a6;max-width:60ch;"></p>
+        <span class="text-xs uppercase tracking-widest self-start md:self-center ml-auto" style="color:#555;">02</span>
+      </div>
+      <div class="service-row px-0 py-5 flex flex-col md:flex-row md:items-start gap-3 md:gap-16">
+        <h3 class="text-white text-xl md:text-2xl font-semibold md:w-1/3 shrink-0">Digital</h3>
+        <p class="text-sm leading-relaxed md:w-2/3" style="color:#a6a6a6;max-width:60ch;">I provide visual direction and custom designs for your website or online store, ensuring your digital presence feels seamless, engaging, and on-brand.</p>
+        <span class="text-xs uppercase tracking-widest self-start md:self-center ml-auto" style="color:#555;">03</span>
+      </div>
+      <div class="service-row px-0 py-5 flex flex-col md:flex-row md:items-start gap-3 md:gap-16">
+        <h3 class="text-white text-xl md:text-2xl font-semibold md:w-1/3 shrink-0">Marketing Materials</h3>
+        <p class="text-sm leading-relaxed md:w-2/3" style="color:#a6a6a6;max-width:60ch;">I design all the materials you need to communicate with your audience, from sleek business cards and brochures to social media graphics and marketing assets.</p>
+        <span class="text-xs uppercase tracking-widest self-start md:self-center ml-auto" style="color:#555;">04</span>
+      </div>
+      <div class="service-row px-0 py-5 flex items-center justify-between">
+        <h3 class="text-white text-xl md:text-2xl font-semibold">Packaging</h3>
+        <span class="text-xs uppercase tracking-widest" style="color:#555;">05</span>
+      </div>
+      <div class="service-row px-0 py-5 flex items-center justify-between">
+        <h3 class="text-white text-xl md:text-2xl font-semibold">Visual Identity</h3>
+        <span class="text-xs uppercase tracking-widest" style="color:#555;">06</span>
+      </div>
+    </section>
 
   </main>
 
-  <!-- ══════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════ -->
-  <footer class="px-5 md:px-10 py-12 border-t" style="border-color: #2a2a2a;">
+  <!-- FOOTER -->
+  <footer class="px-5 md:px-10 py-12" style="border-top:1px solid #2a2a2a;">
     <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-      <p class="text-muted text-sm">touch</p>
-      <nav aria-label="Social links">
+      <p class="text-sm" style="color:#a6a6a6;">touch</p>
+      <nav>
         <ul class="flex flex-wrap gap-6 list-none">
-          <li><a href="mailto:hello@patricksuriani.com" class="footer-link text-muted text-sm">Email</a></li>
-          <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="footer-link text-muted text-sm">Instagram</a></li>
-          <li><a href="https://threads.net" target="_blank" rel="noopener noreferrer" class="footer-link text-muted text-sm">Threads</a></li>
-          <li><a href="https://x.com" target="_blank" rel="noopener noreferrer" class="footer-link text-muted text-sm">X (Twitter)</a></li>
+          <li><a href="mailto:hello@patricksuriani.com" class="footer-link text-sm">Email</a></li>
+          <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="footer-link text-sm">Instagram</a></li>
+          <li><a href="https://threads.net" target="_blank" rel="noopener noreferrer" class="footer-link text-sm">Threads</a></li>
+          <li><a href="https://x.com" target="_blank" rel="noopener noreferrer" class="footer-link text-sm">X (Twitter)</a></li>
         </ul>
       </nav>
-      <p class="text-faint text-sm tabular-nums">©<span id="year"></span></p>
+      <p class="text-sm tabular-nums" style="color:#555;">©<span id="year"></span></p>
     </div>
   </footer>
 
-  <!-- ══════════════════════════════════════
-       SCRIPTS
-  ══════════════════════════════════════ -->
-  <script src="https://unpkg.com/lenis@1.3.17/dist/lenis.min.js"></script>
   <script>
-    // ── Lenis smooth scroll
-    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-
-    // ── Clock (Mexico City UTC-6)
+    // Clock
     function updateClock() {
-      const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+      const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Rome' }));
       const h = String(now.getHours()).padStart(2,'0');
       const m = String(now.getMinutes()).padStart(2,'0');
       const el = document.getElementById('clock-time');
       if (el) el.textContent = `${h}:${m}`;
     }
-    updateClock();
-    setInterval(updateClock, 30000);
-
-    // ── Footer year
+    updateClock(); setInterval(updateClock, 30000);
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ── Mobile menu toggle
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuLabel  = document.getElementById('menu-label');
-    let menuOpen = false;
-    menuToggle.addEventListener('click', () => {
-      menuOpen = !menuOpen;
-      mobileMenu.classList.toggle('open', menuOpen);
-      menuLabel.textContent = menuOpen ? 'Close' : 'Menu';
-      menuToggle.setAttribute('aria-expanded', menuOpen);
+    // Mobile menu
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const label = document.getElementById('menu-label');
+    let open = false;
+    toggle.addEventListener('click', () => {
+      open = !open;
+      menu.classList.toggle('open', open);
+      label.textContent = open ? 'Close' : 'Menu';
+      toggle.setAttribute('aria-expanded', open);
     });
 
-    // ── Filter logic
-    const filters = document.getElementById('filters');
-    const cards   = document.querySelectorAll('#works-grid .project-card');
+    // GSAP Photo Stack Animation
+    const photos = [
+      { id:'p1', x:0,   y:80,  rot:-6,  delay:0    },
+      { id:'p2', x:0,   y:0,   rot:3,   delay:0.07 },
+      { id:'p3', x:0,   y:60,  rot:-2,  delay:0.14 },
+      { id:'p4', x:0,   y:20,  rot:5,   delay:0.21 },
+      { id:'p5', x:0,   y:50,  rot:-4,  delay:0.28 },
+      { id:'p6', x:0,   y:30,  rot:2,   delay:0.35 },
+    ];
 
-    filters.addEventListener('click', e => {
-      const btn = e.target.closest('.filter-pill');
-      if (!btn) return;
-      // Update active state
-      filters.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const category = btn.dataset.filter;
-      cards.forEach(card => {
-        const cats = card.dataset.categories || '';
-        const visible = category === 'all' || cats.includes(category);
-        card.style.display = visible ? '' : 'none';
-        if (visible) {
-          // re-trigger subtle fade
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(16px)';
-          requestAnimationFrame(() => {
-            card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          });
-        }
+    // Set initial state and animate in
+    photos.forEach(p => {
+      const el = document.getElementById(p.id);
+      if (!el) return;
+      gsap.set(el, { rotation: p.rot, y: p.y + 60, opacity: 0, scale: 0.9 });
+      gsap.to(el, {
+        rotation: p.rot,
+        y: p.y,
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        delay: p.delay + 0.3,
+        ease: 'power3.out'
       });
     });
 
-    // ── Keyboard accessibility for project cards
-    cards.forEach(card => {
-      card.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.click();
-        }
+    // Subtle float animation after entrance
+    photos.forEach((p, i) => {
+      const el = document.getElementById(p.id);
+      if (!el) return;
+      gsap.to(el, {
+        y: p.y - 10,
+        duration: 2.5 + i * 0.3,
+        delay: 1.5 + p.delay,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1
+      });
+    });
+
+    // Drag to scatter
+    photos.forEach(p => {
+      const el = document.getElementById(p.id);
+      if (!el) return;
+      let isDragging = false, startX, startY, origX, origY;
+      el.addEventListener('mousedown', e => {
+        isDragging = true;
+        startX = e.clientX; startY = e.clientY;
+        const t = gsap.getProperty(el, 'x');
+        const ty = gsap.getProperty(el, 'y');
+        origX = t; origY = ty;
+        gsap.killTweensOf(el, 'y');
+        el.style.zIndex = 10;
+        e.preventDefault();
+      });
+      window.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        gsap.set(el, { x: origX + dx, y: origY + dy });
+      });
+      window.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        el.style.zIndex = '';
+        gsap.to(el, { rotation: p.rot + (Math.random()*6-3), duration:0.6, ease:'elastic.out(1,0.6)' });
       });
     });
   </script>
